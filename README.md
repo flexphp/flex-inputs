@@ -1,13 +1,13 @@
-# Skeleton
+# Inputs
 
-[![Latest Stable Version](https://poser.pugx.org/flexphp/skeleton/v/stable)](https://packagist.org/packages/flexphp/skeleton)
-[![Total Downloads](https://poser.pugx.org/flexphp/skeleton/downloads)](https://packagist.org/packages/flexphp/skeleton)
-[![Latest Unstable Version](https://poser.pugx.org/flexphp/skeleton/v/unstable)](https://packagist.org/packages/flexphp/skeleton)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/flexphp/skeleton/badges/quality-score.png)](https://scrutinizer-ci.com/g/flexphp/skeleton)
-[![License](https://poser.pugx.org/flexphp/skeleton/license)](https://packagist.org/packages/flexphp/skeleton)
-[![composer.lock](https://poser.pugx.org/flexphp/skeleton/composerlock)](https://packagist.org/packages/flexphp/skeleton)
+[![Latest Stable Version](https://poser.pugx.org/flexphp/inputs/v/stable)](https://packagist.org/packages/flexphp/inputs)
+[![Total Downloads](https://poser.pugx.org/flexphp/inputs/downloads)](https://packagist.org/packages/flexphp/inputs)
+[![Latest Unstable Version](https://poser.pugx.org/flexphp/inputs/v/unstable)](https://packagist.org/packages/flexphp/inputs)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/flexphp/inputs/badges/quality-score.png)](https://scrutinizer-ci.com/g/flexphp/inputs)
+[![License](https://poser.pugx.org/flexphp/inputs/license)](https://packagist.org/packages/flexphp/inputs)
+[![composer.lock](https://poser.pugx.org/flexphp/inputs/composerlock)](https://packagist.org/packages/flexphp/inputs)
 
-One Skeleton, Any Framework
+One Input, Any Framework
 
 Change between frameworks when you need. Keep It Simple, SOLID and DRY with FlexPHP.
 
@@ -16,15 +16,9 @@ Change between frameworks when you need. Keep It Simple, SOLID and DRY with Flex
 Install the package with Composer:
 
 ```bash
-git clone git@github.com:flexphp/skeleton.git library
+composer require flexphp/inputs
 ```
-
-- Rename skeleton to library
-- Rename Skeleton to Library
-- Unignore _composer.lock_ file in `.gitignore` file
-- Remove `.gitignore` files in _src_ and _test_ folders
-- Update `README.md` file
 
 ## License
 
-Skeleton is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Inputs is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
