@@ -12,7 +12,7 @@ class InputTest extends TestCase
         $render = Input::text('foo');
 
         $this->assertEquals(<<<'T'
-<input type="text" id="form_foo" name="form[foo]" required="required" class="form-control" />
+<div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" class="form-control" /></div>
 T, $render);
     }
 }
