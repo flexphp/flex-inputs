@@ -12,7 +12,13 @@ class AbstractBuilderTest extends TestCase
     private function getMock(string $name, string $type, array $options): MockObject
     {
         $mock = $this->getMockForAbstractClass(
-            AbstractBuilder::class, [$name, $options], '', true, true, true, ['getType']
+            AbstractBuilder::class,
+            [$name, $options],
+            '',
+            true,
+            true,
+            true,
+            ['getType']
         );
 
         $mock->method('getType')->will($this->returnValue($type));
@@ -213,7 +219,7 @@ T, $render);
 <div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" placeholder="default" class="form-control" /></div>
 T, $render);
     }
-    
+
     public function testItSetRowAttr(): void
     {
         $this->markTestSkipped('Not works...');
