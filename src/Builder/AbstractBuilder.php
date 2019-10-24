@@ -45,7 +45,10 @@ abstract class AbstractBuilder implements BuilderInterface
             ->add(
                 $this->getName(),
                 $this->getType(),
-                array_merge_recursive($this->parseProperties($this->getProperties()), $this->getDefaultOptions($this->getOptions()))
+                array_merge_recursive(
+                    $this->parseProperties($this->getProperties()),
+                    $this->getDefaultOptions($this->getOptions())
+                )
             )
             ->getForm();
     }
@@ -75,19 +78,19 @@ abstract class AbstractBuilder implements BuilderInterface
     {
         $options = [];
 
-        $properties = array_filter($properties, function($var) {
+        $properties = array_filter($properties, function ($var) {
             return !is_null($var);
         });
 
         foreach ($properties as $property => $value) {
             switch ($property) {
-                case 'Label';
+                case 'Label':
                     $options['label'] = $value;
                     break;
-                case 'Default';
+                case 'Default':
                     $options['data'] = $value;
                     break;
-                case 'Constraints';
+                case 'Constraints':
                     $attributes = \json_decode($value, true);
 
                     if ((\json_last_error() !== JSON_ERROR_NONE)) {
@@ -102,7 +105,7 @@ abstract class AbstractBuilder implements BuilderInterface
                         }
                     }
                     break;
-                case 'InputHelp';
+                case 'InputHelp':
                     $options['help'] = $value;
                     break;
             }
