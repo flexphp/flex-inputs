@@ -11,8 +11,8 @@ class Input implements InputInterface
     {
     }
 
-    public static function text(string $name, array $properties = [], array $options = []): string
+    public static function text(string $name, array $options = []): string
     {
-        return (new TextBuilder($name, $properties, $options))->render();
+        return (new TextBuilder($name, $options))->render();
     }
 }

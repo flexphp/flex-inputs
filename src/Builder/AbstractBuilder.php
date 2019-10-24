@@ -2,7 +2,6 @@
 
 namespace FlexPHP\Inputs\Builder;
 
-use Exception;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Forms;
@@ -11,14 +10,12 @@ use Symfony\Component\Form\FormInterface;
 abstract class AbstractBuilder implements BuilderInterface
 {
     private $name;
-    private $properties;
     private $options;
     protected $build = null;
 
-    public function __construct(string $name, array $properties, array $options)
+    public function __construct(string $name, array $options)
     {
         $this->name = $name;
-        $this->properties = $properties;
         $this->options = $options;
     }
 
@@ -26,12 +23,7 @@ abstract class AbstractBuilder implements BuilderInterface
 
     public function getName(): string
     {
-        return str_replace(' ', '_', $this->name);
-    }
-
-    public function getProperties(): array
-    {
-        return $this->properties;
+        return preg_replace('/(\s)+/', '_', trim($this->name)) ?? $this->name;
     }
 
     public function getOptions(): array
@@ -45,10 +37,7 @@ abstract class AbstractBuilder implements BuilderInterface
             ->add(
                 $this->getName(),
                 $this->getType(),
-                array_merge_recursive(
-                    $this->parseProperties($this->getProperties()),
-                    $this->getDefaultOptions($this->getOptions())
-                )
+                $this->parseOptions($this->getDefaultOptions($this->getOptions())),
             )
             ->getForm();
     }
@@ -67,28 +56,28 @@ abstract class AbstractBuilder implements BuilderInterface
 
     protected function getDefaultOptions(array $options = []): array
     {
-        return [
+        return array_merge([
             'mapped' => false,
             'required' => false,
             'trim' => false,
-        ] + $options;
+        ], $options);
     }
 
-    private function parseProperties(array $properties): array
+    private function parseOptions(array $options): array
     {
-        $options = [];
+        $_options = [];
 
-        $properties = array_filter($properties, function ($var) {
+        $options = array_filter($options, function ($var) {
             return !is_null($var);
         });
 
-        foreach ($properties as $property => $value) {
-            switch ($property) {
+        foreach ($options as $option => $value) {
+            switch ($option) {
                 case 'Label':
-                    $options['label'] = $value;
+                    $_options['label'] = $value;
                     break;
                 case 'Default':
-                    $options['data'] = $value;
+                    $_options['data'] = $value;
                     break;
                 case 'Constraints':
                     $attributes = \json_decode($value, true);
@@ -99,19 +88,38 @@ abstract class AbstractBuilder implements BuilderInterface
 
                     foreach ($attributes as $attribute => $_value) {
                         if ($attribute == 'required' || $_value == 'required') {
-                            $options['required'] = true;
+                            $_options['required'] = true;
                         } else {
-                            $options['attr'][$attribute] = $_value;
+                            $_options['attr'][$attribute] = $_value;
                         }
                     }
                     break;
-                case 'InputHelp':
-                    $options['help'] = $value;
+                case 'Help':
+                    $_options['help'] = $value;
+                    break;
+                case 'empty_data':
+                    $_options[$option] = $value;
+
+                    if (!empty($_options['attr'])) {
+                        $_options['attr'] = array_merge_recursive($_options['attr'], ['placeholder' => $value]);
+                    } else {
+                        $_options['attr']['placeholder'] = $value;
+                    }
+
+                    break;
+                default:
+                    if (is_array($value) && !empty($_options[$option])) {
+                        $_options[$option] = array_merge_recursive($_options[$option], $value);
+                    } else {
+                        $_options[$option] = $value;
+                    }
                     break;
             }
+
+            unset($options[$option]);
         }
 
-        return $options;
+        return $_options;
     }
 
     private function twig()
