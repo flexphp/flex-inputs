@@ -92,6 +92,17 @@ T, $render);
 T, $render);
     }
 
+    public function testItSetType(): void
+    {
+        $render = $this->getMock('foo', TextType::class, [
+            'Type' => 'email',
+        ])->render();
+
+        $this->assertEquals(<<<'T'
+<div class="form-group"><label for="form_foo">Foo</label><input type="email" id="form_foo" name="form[foo]" class="form-control" /></div>
+T, $render);
+    }
+
     public function testItSetRequired(): void
     {
         $render = $this->getMock('foo', TextType::class, [
@@ -117,6 +128,214 @@ T, $render);
 
         $this->assertEquals(<<<'T'
 <div class="form-group"><label for="form_foo" class="required">Foo</label><input type="text" id="form_foo" name="form[foo]" required="required" class="form-control" /></div>
+T, $render);
+    }
+
+    public function testItSetTypeConstraint(): void
+    {
+        $render = $this->getMock('foo', TextType::class, [
+            'Constraints' => json_encode([
+                'type' => 'email',
+            ]),
+        ])->render();
+
+        $this->assertEquals(<<<'T'
+<div class="form-group"><label for="form_foo">Foo</label><input type="email" id="form_foo" name="form[foo]" class="form-control" /></div>
+T, $render);
+    }
+
+    public function testItSetTypeAttrConstraint(): void
+    {
+        $render = $this->getMock('foo', TextType::class, [
+            'attr' => [
+                'type' => 'email',
+            ],
+        ])->render();
+
+        $this->assertEquals(<<<'T'
+<div class="form-group"><label for="form_foo">Foo</label><input type="email" id="form_foo" name="form[foo]" class="form-control" /></div>
+T, $render);
+    }
+
+    public function testItSetDigitsConstraint(): void
+    {
+        $render = $this->getMock('foo', TextType::class, [
+            'Constraints' => json_encode([
+                'type' => 'digits',
+            ]),
+        ])->render();
+
+        $this->assertEquals(<<<'T'
+<div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" data-parsley-type="digits" class="form-control" /></div>
+T, $render);
+    }
+
+    public function testItSetAlphanumConstraint(): void
+    {
+        $render = $this->getMock('foo', TextType::class, [
+            'Constraints' => json_encode([
+                'Type' => 'Alphanum',
+            ]),
+        ])->render();
+
+        $this->assertEquals(<<<'T'
+<div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" data-parsley-type="alphanum" class="form-control" /></div>
+T, $render);
+    }
+
+    public function testItSetMinLengthConstraint(): void
+    {
+        $render = $this->getMock('foo', TextType::class, [
+            'Constraints' => json_encode([
+                'minlength' => 5,
+            ]),
+        ])->render();
+
+        $this->assertEquals(<<<'T'
+<div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" minlength="5" class="form-control" /></div>
+T, $render);
+    }
+
+    public function testItSetMaxLengthConstraint(): void
+    {
+        $render = $this->getMock('foo', TextType::class, [
+            'Constraints' => json_encode([
+                'maxlength' => 666,
+            ]),
+        ])->render();
+
+        $this->assertEquals(<<<'T'
+<div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" maxlength="666" class="form-control" /></div>
+T, $render);
+    }
+
+    public function testItSetLengthConstraint(): void
+    {
+        $render = $this->getMock('foo', TextType::class, [
+            'Constraints' => json_encode([
+                'length' => '[6,10]',
+            ]),
+        ])->render();
+
+        $this->assertEquals(<<<'T'
+<div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" data-parsley-length="[6,10]" class="form-control" /></div>
+T, $render);
+    }
+
+    public function testItSetMinConstraint(): void
+    {
+        $render = $this->getMock('foo', TextType::class, [
+            'Constraints' => json_encode([
+                'min' => 3,
+            ]),
+        ])->render();
+
+        $this->assertEquals(<<<'T'
+<div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" min="3" class="form-control" /></div>
+T, $render);
+    }
+
+    public function testItSetMaxConstraint(): void
+    {
+        $render = $this->getMock('foo', TextType::class, [
+            'Constraints' => json_encode([
+                'max' => 99,
+            ]),
+        ])->render();
+
+        $this->assertEquals(<<<'T'
+<div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" max="99" class="form-control" /></div>
+T, $render);
+    }
+
+    public function testItSetRangeConstraint(): void
+    {
+        $render = $this->getMock('foo', TextType::class, [
+            'Constraints' => json_encode([
+                'range' => '6,10',
+            ]),
+        ])->render();
+
+        $this->assertEquals(<<<'T'
+<div class="form-group"><label for="form_foo">Foo</label>        <input type="range" id="form_foo" name="form[foo]" min="6" max="10" class="form-control" /></div>
+T, $render);
+    }
+
+    public function testItSetPatternConstraint(): void
+    {
+        $render = $this->getMock('foo', TextType::class, [
+            'Constraints' => json_encode([
+                'pattern' => "\+d",
+            ]),
+        ])->render();
+
+        $this->assertEquals(<<<'T'
+<div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" pattern="\+d" class="form-control" /></div>
+T, $render);
+    }
+
+    public function testItSetMinCheckConstraint(): void
+    {
+        $render = $this->getMock('foo', TextType::class, [
+            'Constraints' => json_encode([
+                'mincheck' => '3',
+            ]),
+        ])->render();
+
+        $this->assertEquals(<<<'T'
+<div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" data-parsley-mincheck="3" class="form-control" /></div>
+T, $render);
+    }
+
+    public function testItSetMaxCheckConstraint(): void
+    {
+        $render = $this->getMock('foo', TextType::class, [
+            'Constraints' => json_encode([
+                'maxcheck' => 5,
+            ]),
+        ])->render();
+
+        $this->assertEquals(<<<'T'
+<div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" data-parsley-maxcheck="5" class="form-control" /></div>
+T, $render);
+    }
+
+    public function testItSetCheckConstraint(): void
+    {
+        $render = $this->getMock('foo', TextType::class, [
+            'Constraints' => json_encode([
+                'check' => '[1,3]',
+            ]),
+        ])->render();
+
+        $this->assertEquals(<<<'T'
+<div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" data-parsley-check="[1,3]" class="form-control" /></div>
+T, $render);
+    }
+
+    public function testItSetEqualToConstraint(): void
+    {
+        $render = $this->getMock('foo', TextType::class, [
+            'Constraints' => json_encode([
+                'equalto' => '#another',
+            ]),
+        ])->render();
+
+        $this->assertEquals(<<<'T'
+<div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" data-parsley-equalto="#another" class="form-control" /></div>
+T, $render);
+    }
+
+    public function testItSetDataParsleyConstraint(): void
+    {
+        $render = $this->getMock('foo', TextType::class, [
+            'Constraints' => json_encode([
+                'data-parsley-validator-foo' => '#bar',
+            ]),
+        ])->render();
+
+        $this->assertEquals(<<<'T'
+<div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" data-parsley-validator-foo="#bar" class="form-control" /></div>
 T, $render);
     }
 

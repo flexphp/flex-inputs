@@ -3,10 +3,9 @@
 namespace FlexPHP\Inputs;
 
 use FlexPHP\Inputs\Builder\AbstractBuilder;
-use InvalidArgumentException;
 
 /**
- * @method string text()
+ * @method static string text()
  */
 class Input implements InputInterface
 {
@@ -17,17 +16,10 @@ class Input implements InputInterface
 
     public static function create(string $type, string $name, array $options = []): string
     {
-        $type = preg_replace('/type$/i', '', trim($type)) ?? $type;
-        $classType = \sprintf('\Symfony\Component\Form\Extension\Core\Type\%1$sType', $type);
+        return (new class($type, $name, $options) extends AbstractBuilder {
+            protected $type;
 
-        if (!\class_exists($classType)) {
-            throw new InvalidArgumentException(\sprintf('Type [%1$s] is not supported', $type));
-        }
-
-        return (new class($name, $options, $classType) extends AbstractBuilder {
-            private $type;
-
-            public function __construct($name, $options, $type)
+            public function __construct($type, $name, $options)
             {
                 $this->type = $type;
 

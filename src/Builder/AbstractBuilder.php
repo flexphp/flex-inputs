@@ -6,17 +6,18 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\FormInterface;
+use \InvalidArgumentException;
 
 abstract class AbstractBuilder implements BuilderInterface
 {
     private $name;
     private $options;
-    protected $build = null;
+    protected $type;
 
     public function __construct(string $name, array $options)
     {
         $this->name = $name;
-        $this->options = $options;
+        $this->options = $this->parseOptions($this->getDefaultOptions($options));
     }
 
     abstract protected function getType(): string;
@@ -33,12 +34,28 @@ abstract class AbstractBuilder implements BuilderInterface
 
     public function build(): FormInterface
     {
-        return $this->factory()
-            ->add(
-                $this->getName(),
-                $this->getType(),
-                $this->parseOptions($this->getDefaultOptions($this->getOptions())),
-            )
+        $options = $this->getOptions();
+        $classType = trim($this->getType());
+
+        if (\strpos($classType, 'Symfony') === false) {
+            // Not symfony type
+            $type = preg_replace('/type$/i', '', $classType) ?? $classType;
+            $classType = \sprintf('\Symfony\Component\Form\Extension\Core\Type\%1$sType', \ucwords($type));
+        } elseif (!empty($options['type']) && strpos(\strtolower($classType), $options['type']) === false) {
+            // Symfony type, but its diff in options type contraint
+            $type = $options['type'];
+            $classType = \sprintf('\Symfony\Component\Form\Extension\Core\Type\%1$sType', \ucwords($type));
+        }
+
+        unset($options['type']);
+
+        if (!\class_exists($classType)) {
+            throw new InvalidArgumentException(\sprintf('Type [%1$s] is not supported', $classType));
+        }
+
+        return $this
+            ->factory()
+            ->add($this->getName(), $classType, $options)
             ->getForm();
     }
 
@@ -67,19 +84,26 @@ abstract class AbstractBuilder implements BuilderInterface
     {
         $_options = [];
 
-        $options = array_filter($options, function ($var) {
+        $options = array_change_key_case(array_filter($options, function ($var) {
             return !is_null($var);
-        });
+        }));
+
+        if (!empty($options['attr']['type'])) {
+            $options['type'] = $options['attr']['type'];
+            unset($options['attr']['type']);
+        }
+
+        if (!empty($options['constraints']['type'])) {
+            $options['type'] = $options['constraints']['type'];
+            unset($options['constraints']['type']);
+        }
 
         foreach ($options as $option => $value) {
             switch ($option) {
-                case 'Label':
-                    $_options['label'] = $value;
-                    break;
-                case 'Default':
+                case 'default':
                     $_options['data'] = $value;
                     break;
-                case 'Constraints':
+                case 'constraints':
                     $attributes = \json_decode($value, true);
 
                     if ((\json_last_error() !== JSON_ERROR_NONE)) {
@@ -87,24 +111,31 @@ abstract class AbstractBuilder implements BuilderInterface
                     }
 
                     foreach ($attributes as $attribute => $_value) {
+                        $attribute = \strtolower($attribute);
+
                         if ($attribute == 'required' || $_value == 'required') {
                             $_options['required'] = true;
+                        } elseif (in_array($attribute, ['length', 'mincheck', 'maxcheck', 'check', 'equalto'])) {
+                            $_options['attr']['data-parsley-' . $attribute] = $_value;
+                        } elseif ($attribute == 'range') {
+                            $_options['type'] = $attribute;
+                            list($min, $max) = explode(',', $_value);
+                            $_options['attr'] = compact('min', 'max');
+                        } elseif ($attribute == 'type') {
+                            $_options['type'] = $_value;
                         } else {
                             $_options['attr'][$attribute] = $_value;
                         }
                     }
                     break;
-                case 'Help':
-                    $_options['help'] = $value;
-                    break;
                 case 'empty_data':
                     $_options[$option] = $value;
 
-                    if (!empty($_options['attr'])) {
-                        $_options['attr'] = array_merge_recursive($_options['attr'], ['placeholder' => $value]);
-                    } else {
-                        $_options['attr']['placeholder'] = $value;
+                    if (empty($_options['attr'])) {
+                        $_options['attr'] = [];
                     }
+
+                    $_options['attr']['placeholder'] = $value;
 
                     break;
                 default:
@@ -117,6 +148,18 @@ abstract class AbstractBuilder implements BuilderInterface
             }
 
             unset($options[$option]);
+        }
+
+        if (!empty($_options['type'])) {
+            $_type = strtolower($_options['type']);
+
+            switch ($_type) {
+                case 'digits':
+                case 'alphanum':
+                    $_options['attr']['data-parsley-type'] = $_type;
+                    $_options['type'] = 'text';
+                    break;
+            }
         }
 
         return $_options;
