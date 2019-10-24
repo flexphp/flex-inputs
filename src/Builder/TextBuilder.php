@@ -11,9 +11,4 @@ class TextBuilder extends AbstractBuilder
     {
         return TextType::class;
     }
-
-    protected function getFileTemplate(): string
-    {
-        return 'Text.html.twig';
-    }
 }

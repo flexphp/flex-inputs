@@ -23,8 +23,6 @@ abstract class AbstractBuilder implements BuilderInterface
 
     abstract protected function getType(): string;
 
-    abstract protected function getFileTemplate(): string;
-
     public function getName(): string
     {
         return $this->name;
@@ -49,30 +47,8 @@ abstract class AbstractBuilder implements BuilderInterface
 
     public function render(): string
     {
-        $appVariableReflection = new \ReflectionClass('\Symfony\Bridge\Twig\AppVariable');
-        $vendorTwigBridgeDirectory = dirname((string)$appVariableReflection->getFileName());
-
-        $loader = new \Twig\Loader\FilesystemLoader([
-            $this->getPathTemplate(),
-            $vendorTwigBridgeDirectory . '/Resources/views/Form',
-        ]);
-
-        $twig = new \Twig\Environment($loader);
-        $twig->addExtension(new \Symfony\Bridge\Twig\Extension\FormExtension());
-        $twig->addExtension(new \Symfony\Bridge\Twig\Extension\TranslationExtension(
-            new \Symfony\Component\Translation\Translator('en')
-        ));
-
-        $formEngine = new \Symfony\Bridge\Twig\Form\TwigRendererEngine(['bootstrap_4_layout.html.twig'], $twig);
-        $twig->addRuntimeLoader(new \Twig\RuntimeLoader\FactoryRuntimeLoader([
-            \Symfony\Component\Form\FormRenderer::class => function () use ($formEngine) {
-                return new \Symfony\Component\Form\FormRenderer($formEngine);
-            },
-        ]));
-
-        return $twig->render($this->getFileTemplate(), [
+        return $this->twig()->createTemplate(\sprintf('{{ form_widget(form.%1$s) }}', $this->getName()))->render([
             'form' => $this->build()->createView(),
-            'field' => $this->getName(),
         ]);
     }
 
@@ -88,8 +64,28 @@ abstract class AbstractBuilder implements BuilderInterface
         ] + $options;
     }
 
-    protected function getPathTemplate(): string
+    private function twig()
     {
-        return \sprintf('%1$s/../Template', __DIR__);
+        $appVariableReflection = new \ReflectionClass('\Symfony\Bridge\Twig\AppVariable');
+        $vendorTwigBridgeDirectory = dirname((string)$appVariableReflection->getFileName());
+        
+        $loader = new \Twig\Loader\FilesystemLoader([
+            $vendorTwigBridgeDirectory . '/Resources/views/Form',
+        ]);
+        
+        $twig = new \Twig\Environment($loader);
+        $twig->addExtension(new \Symfony\Bridge\Twig\Extension\FormExtension());
+        $twig->addExtension(new \Symfony\Bridge\Twig\Extension\TranslationExtension(
+            new \Symfony\Component\Translation\Translator('en')
+        ));
+        
+        $formEngine = new \Symfony\Bridge\Twig\Form\TwigRendererEngine(['bootstrap_4_layout.html.twig'], $twig);
+        $twig->addRuntimeLoader(new \Twig\RuntimeLoader\FactoryRuntimeLoader([
+            \Symfony\Component\Form\FormRenderer::class => function () use ($formEngine) {
+                return new \Symfony\Component\Form\FormRenderer($formEngine);
+            },
+        ]));
+
+        return $twig;
     }
 }

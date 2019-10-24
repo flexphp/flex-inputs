@@ -6,6 +6,7 @@ use FlexPHP\Inputs\Builder\TextBuilder;
 
 class Input implements InputInterface
 {
+    /** @codeCoverageIgnore */
     private function __construct()
     {
     }
