@@ -10,8 +10,8 @@ use \InvalidArgumentException;
 
 abstract class AbstractBuilder implements BuilderInterface
 {
-    private $name;
-    private $options;
+    protected $name;
+    protected $options;
     protected $type;
 
     public function __construct(string $name, array $options)
@@ -19,8 +19,6 @@ abstract class AbstractBuilder implements BuilderInterface
         $this->name = $name;
         $this->options = $this->parseOptions($this->getDefaultOptions($options));
     }
-
-    abstract protected function getType(): string;
 
     public function getName(): string
     {
@@ -66,9 +64,14 @@ abstract class AbstractBuilder implements BuilderInterface
         ]);
     }
 
-    private function factory(): FormBuilderInterface
+    protected function factory(): FormBuilderInterface
     {
         return Forms::createFormFactory()->createBuilder(FormType::class, null);
+    }
+
+    protected function getType(): string
+    {
+        return $this->type;
     }
 
     private function getDefaultOptions(array $options = []): array
@@ -158,7 +161,7 @@ abstract class AbstractBuilder implements BuilderInterface
         return $_options;
     }
 
-    private function twig()
+    protected function twig()
     {
         $appVariableReflection = new \ReflectionClass('\Symfony\Bridge\Twig\AppVariable');
         $vendorTwigBridgeDirectory = dirname((string)$appVariableReflection->getFileName());

@@ -17,8 +17,6 @@ class Input implements InputInterface
     public static function create(string $type, string $name, array $options = []): string
     {
         return (new class($type, $name, $options) extends AbstractBuilder {
-            protected $type;
-
             public function __construct($type, $name, $options)
             {
                 $this->type = $type;
