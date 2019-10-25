@@ -40,11 +40,11 @@ abstract class AbstractBuilder implements BuilderInterface
         if (\strpos($classType, 'Symfony') === false) {
             // Not symfony type
             $type = preg_replace('/type$/i', '', $classType) ?? $classType;
-            $classType = \sprintf('\Symfony\Component\Form\Extension\Core\Type\%1$sType', \ucwords($type));
-        } elseif (!empty($options['type']) && strpos(\strtolower($classType), $options['type']) === false) {
+            $classType = \sprintf('\Symfony\Component\Form\Extension\Core\Type\%1$sType', $type);
+        } elseif (!empty($options['type']) && \stripos($classType, $options['type']) === false) {
             // Symfony type, but its diff in options type contraint
             $type = $options['type'];
-            $classType = \sprintf('\Symfony\Component\Form\Extension\Core\Type\%1$sType', \ucwords($type));
+            $classType = \sprintf('\Symfony\Component\Form\Extension\Core\Type\%1$sType', $type);
         }
 
         unset($options['type']);
@@ -66,17 +66,15 @@ abstract class AbstractBuilder implements BuilderInterface
         ]);
     }
 
-    protected function factory(): FormBuilderInterface
+    private function factory(): FormBuilderInterface
     {
         return Forms::createFormFactory()->createBuilder(FormType::class, null);
     }
 
-    protected function getDefaultOptions(array $options = []): array
+    private function getDefaultOptions(array $options = []): array
     {
         return array_merge([
-            'mapped' => false,
             'required' => false,
-            'trim' => false,
         ], $options);
     }
 
@@ -91,11 +89,6 @@ abstract class AbstractBuilder implements BuilderInterface
         if (!empty($options['attr']['type'])) {
             $options['type'] = $options['attr']['type'];
             unset($options['attr']['type']);
-        }
-
-        if (!empty($options['constraints']['type'])) {
-            $options['type'] = $options['constraints']['type'];
-            unset($options['constraints']['type']);
         }
 
         foreach ($options as $option => $value) {

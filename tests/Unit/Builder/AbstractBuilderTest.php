@@ -106,7 +106,7 @@ T, $render);
     public function testItSetRequired(): void
     {
         $render = $this->getMock('foo', TextType::class, [
-            'required' => true,
+            'Required' => true,
         ])->render();
 
         $this->assertEquals(<<<'T'
