@@ -2,6 +2,7 @@
 
 namespace FlexPHP\Inputs;
 
+use FlexPHP\Inputs\Builder\FormBuilder;
 use FlexPHP\Inputs\Builder\InputBuilder;
 
 /**
@@ -12,6 +13,11 @@ class Input implements InputInterface
     /** @codeCoverageIgnore */
     private function __construct()
     {
+    }
+
+    public static function form(array $inputs, $data = null, array $options = [], string $template = null): string
+    {
+        return (new FormBuilder($inputs, $data, $options, $template))->render();
     }
 
     public static function create(string $type, string $name, array $options = []): string

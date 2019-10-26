@@ -36,12 +36,22 @@ class InputTest extends TestCase
 T, $render);
     }
 
-    public function testItRenderText(): void
+    public function testItRenderMethodType(): void
     {
         $render = Input::text('foo');
 
         $this->assertEquals(<<<'T'
 <div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" class="form-control" /></div>
+T, $render);
+    }
+
+    public function testItRenderMethodForm(): void
+    {
+        $render = Input::form([]);
+
+        $this->assertEquals(<<<'T'
+<form name="form" method="post">
+</form>
 T, $render);
     }
 

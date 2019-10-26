@@ -14,14 +14,8 @@ class FormBuilder extends AbstractBuilder
     private $inputs;
     private $template;
 
-    public function __construct(
-        string $name,
-        array $inputs,
-        array $data = null,
-        array $options = [],
-        string $template = null
-    ) {
-        $this->name = $name;
+    public function __construct(array $inputs, array $data = null, array $options = [], string $template = null)
+    {
         $this->inputs = $this->parseInputs($inputs);
         $this->data = $data;
         $this->options = $options;
