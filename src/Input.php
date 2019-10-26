@@ -2,11 +2,10 @@
 
 namespace FlexPHP\Inputs;
 
-use FlexPHP\Inputs\Builder\AbstractBuilder;
 use FlexPHP\Inputs\Builder\InputBuilder;
 
 /**
- * @method static string text()
+ * @method static string text(string $name, array $options = [])
  */
 class Input implements InputInterface
 {

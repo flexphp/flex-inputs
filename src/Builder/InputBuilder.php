@@ -32,11 +32,11 @@ class InputBuilder extends AbstractBuilder
         if (\strpos($classType, 'Symfony') === false) {
             // Not symfony type
             $type = preg_replace('/type$/i', '', $classType) ?? $classType;
-            $classType = \sprintf('\Symfony\Component\Form\Extension\Core\Type\%1$sType', $type);
+            $classType = \sprintf('\Symfony\Component\Form\Extension\Core\Type\%1$sType', \ucwords($type));
         } elseif (!empty($options['type']) && \stripos($classType, $options['type']) === false) {
             // Symfony type, but its diff in options type contraint
             $type = $options['type'];
-            $classType = \sprintf('\Symfony\Component\Form\Extension\Core\Type\%1$sType', $type);
+            $classType = \sprintf('\Symfony\Component\Form\Extension\Core\Type\%1$sType', \ucwords($type));
         }
 
         unset($options['type']);
