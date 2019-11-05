@@ -31,7 +31,7 @@ class InputTest extends TestCase
     {
         $render = Input::create($type, 'foo');
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" class="form-control" /></div>
 T, $render);
     }
@@ -40,7 +40,7 @@ T, $render);
     {
         $render = Input::text('foo');
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" class="form-control" /></div>
 T, $render);
     }
@@ -49,7 +49,7 @@ T, $render);
     {
         $render = Input::form([]);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <form name="form" method="post">
 </form>
 T, $render);

@@ -11,7 +11,7 @@ class FormBuilderTest extends TestCase
     {
         $render = (new FormBuilder([]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <form name="form" method="post">
 </form>
 T, $render);
@@ -23,7 +23,7 @@ T, $render);
             'foo' => '<div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" class="form-control" /></div>',
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <form name="form" method="post">
     <div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" class="form-control" /></div>
 </form>
@@ -38,7 +38,7 @@ T, $render);
             ],
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <form name="form" method="post">
     <div class="form-group"><label for="form_foo">Foo</label><input type="email" id="form_foo" name="form[foo]" class="form-control" /></div>
 </form>
@@ -56,7 +56,7 @@ T, $render);
             ],
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <form name="form" method="post">
     <div class="form-group"><label for="form_foo">Foo</label><input type="email" id="form_foo" name="form[foo]" class="form-control" /></div>
     <div class="form-group"><label for="form_bar">Bar</label><textarea id="form_bar" name="form[bar]" class="form-control"></textarea></div>
@@ -68,7 +68,7 @@ T, $render);
     {
         $render = (new FormBuilder([], null, [], '{{ form(form) }}'))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <form name="form" method="post"><div id="form"></div></form>
 T, $render);
     }
@@ -79,7 +79,7 @@ T, $render);
 
         $render = (new FormBuilder([], null, [], $file))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 File: <form name="form" method="post"><div id="form"></div></form>
 T, $render);
     }

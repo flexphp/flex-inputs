@@ -65,7 +65,7 @@ class FormBuilder extends AbstractBuilder
 
     private function getTemplate(): string
     {
-        $_template = <<<'T'
+        $_template = <<<T
 {{ form_start(form) }}
 {% for input in inputs %}
     {{ input|raw }}

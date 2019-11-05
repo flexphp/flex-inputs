@@ -11,7 +11,7 @@ class InputBuilderTest extends TestCase
     {
         $render = (new InputBuilder('foo', []))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" class="form-control" /></div>
 T, $render);
     }
@@ -20,7 +20,7 @@ T, $render);
     {
         $render = (new InputBuilder('foo_bar', []))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo_bar">Foo bar</label><input type="text" id="form_foo_bar" name="form[foo_bar]" class="form-control" /></div>
 T, $render);
     }
@@ -32,7 +32,7 @@ T, $render);
     {
         $render = (new InputBuilder($name, []))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo_bar">Foo bar</label><input type="text" id="form_foo_bar" name="form[foo_bar]" class="form-control" /></div>
 T, $render);
     }
@@ -43,7 +43,7 @@ T, $render);
             'Label' => 'My Label',
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">My Label</label><input type="text" id="form_foo" name="form[foo]" class="form-control" /></div>
 T, $render);
     }
@@ -57,7 +57,7 @@ T, $render);
             ],
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label class="label-class" for="form_foo">My Label</label><input type="text" id="form_foo" name="form[foo]" class="form-control" /></div>
 T, $render);
     }
@@ -68,7 +68,7 @@ T, $render);
             'Default' => 'fuz',
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" class="form-control" value="fuz" /></div>
 T, $render);
     }
@@ -79,7 +79,7 @@ T, $render);
             'Type' => 'email',
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label><input type="email" id="form_foo" name="form[foo]" class="form-control" /></div>
 T, $render);
     }
@@ -90,7 +90,7 @@ T, $render);
             'Required' => true,
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo" class="required">Foo</label><input type="text" id="form_foo" name="form[foo]" required="required" class="form-control" /></div>
 T, $render);
     }
@@ -107,7 +107,7 @@ T, $render);
             'Constraints' => $required,
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo" class="required">Foo</label><input type="text" id="form_foo" name="form[foo]" required="required" class="form-control" /></div>
 T, $render);
     }
@@ -120,7 +120,7 @@ T, $render);
             ]),
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label><input type="email" id="form_foo" name="form[foo]" class="form-control" /></div>
 T, $render);
     }
@@ -133,7 +133,7 @@ T, $render);
             ],
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label><input type="email" id="form_foo" name="form[foo]" class="form-control" /></div>
 T, $render);
     }
@@ -146,7 +146,7 @@ T, $render);
             ]),
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" data-parsley-type="digits" class="form-control" /></div>
 T, $render);
     }
@@ -159,7 +159,7 @@ T, $render);
             ]),
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" data-parsley-type="alphanum" class="form-control" /></div>
 T, $render);
     }
@@ -172,7 +172,7 @@ T, $render);
             ]),
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" minlength="5" class="form-control" /></div>
 T, $render);
     }
@@ -185,7 +185,7 @@ T, $render);
             ]),
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" maxlength="666" class="form-control" /></div>
 T, $render);
     }
@@ -198,7 +198,7 @@ T, $render);
             ]),
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" data-parsley-length="[6,10]" class="form-control" /></div>
 T, $render);
     }
@@ -211,7 +211,7 @@ T, $render);
             ]),
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" min="3" class="form-control" /></div>
 T, $render);
     }
@@ -224,7 +224,7 @@ T, $render);
             ]),
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" max="99" class="form-control" /></div>
 T, $render);
     }
@@ -237,7 +237,7 @@ T, $render);
             ]),
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label>        <input type="range" id="form_foo" name="form[foo]" min="6" max="10" class="form-control" /></div>
 T, $render);
     }
@@ -250,7 +250,7 @@ T, $render);
             ]),
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" pattern="\+d" class="form-control" /></div>
 T, $render);
     }
@@ -263,7 +263,7 @@ T, $render);
             ]),
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" data-parsley-mincheck="3" class="form-control" /></div>
 T, $render);
     }
@@ -276,7 +276,7 @@ T, $render);
             ]),
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" data-parsley-maxcheck="5" class="form-control" /></div>
 T, $render);
     }
@@ -289,7 +289,7 @@ T, $render);
             ]),
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" data-parsley-check="[1,3]" class="form-control" /></div>
 T, $render);
     }
@@ -302,7 +302,7 @@ T, $render);
             ]),
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" data-parsley-equalto="#another" class="form-control" /></div>
 T, $render);
     }
@@ -315,7 +315,7 @@ T, $render);
             ]),
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" data-parsley-validator-foo="#bar" class="form-control" /></div>
 T, $render);
     }
@@ -326,7 +326,7 @@ T, $render);
             'Help' => 'A help block',
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" aria-describedby="form_foo_help" class="form-control" /><small id="form_foo_help" class="form-text text-muted">A help block</small></div>
 T, $render);
     }
@@ -340,7 +340,7 @@ T, $render);
             ],
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" aria-describedby="form_foo_help" class="form-control" /><small id="form_foo_help" class="help-class form-text text-muted">A help block</small></div>
 T, $render);
     }
@@ -352,7 +352,7 @@ T, $render);
             'help_html' => true,
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" aria-describedby="form_foo_help" class="form-control" /><small id="form_foo_help" class="form-text text-muted"><a href="link">A help block</a></small></div>
 T, $render);
     }
@@ -365,7 +365,7 @@ T, $render);
             ],
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" class="input-class form-control" /></div>
 T, $render);
     }
@@ -379,7 +379,7 @@ T, $render);
             'empty_data' => 'default',
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" class="input-class form-control" placeholder="default" /></div>
 T, $render);
     }
@@ -393,7 +393,7 @@ T, $render);
             ],
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" placeholder="default" class="input-class form-control" /></div>
 T, $render);
     }
@@ -404,7 +404,7 @@ T, $render);
             'disabled' => true,
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" disabled="disabled" class="form-control" /></div>
 T, $render);
     }
@@ -415,7 +415,7 @@ T, $render);
             'empty_data' => 'default',
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" placeholder="default" class="form-control" /></div>
 T, $render);
     }
@@ -430,7 +430,7 @@ T, $render);
             ],
         ]))->render();
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <div class="row-class form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" class="form-control" /></div>
 T, $render);
     }
