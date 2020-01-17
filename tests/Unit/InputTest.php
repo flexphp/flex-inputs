@@ -33,7 +33,8 @@ class InputTest extends TestCase
 
         $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" class="form-control" /></div>
-T, $render);
+T
+, $render);
     }
 
     public function testItRenderMethodType(): void
@@ -42,7 +43,8 @@ T, $render);
 
         $this->assertEquals(<<<T
 <div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" class="form-control" /></div>
-T, $render);
+T
+, $render);
     }
 
     public function testItRenderMethodForm(): void
@@ -52,7 +54,8 @@ T, $render);
         $this->assertEquals(<<<T
 <form name="form" method="post">
 </form>
-T, $render);
+T
+, $render);
     }
 
     public function getTypeNameOptions(): array
