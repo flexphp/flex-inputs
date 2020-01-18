@@ -8,8 +8,14 @@ interface BuilderInterface
 {
     public function getName(): string;
 
+    /**
+     * @return array<string>
+     */
     public function getOptions(): array;
 
+    /**
+     * @return FormInterface<string>
+     */
     public function build(): FormInterface;
 
     public function render(): string;

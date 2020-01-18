@@ -11,8 +11,15 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class InputBuilder extends AbstractBuilder
 {
+    /**
+     * @var string
+     */
     protected $type;
 
+    /**
+     * @param string $name
+     * @param array<string> $options
+     */
     public function __construct(string $name, array $options)
     {
         $this->name = $name;
@@ -58,6 +65,9 @@ class InputBuilder extends AbstractBuilder
         ]);
     }
 
+    /**
+     * @return FormBuilderInterface<string>
+     */
     protected function factory(): FormBuilderInterface
     {
         return Forms::createFormFactory()->createBuilder(FormType::class, null);
@@ -68,13 +78,21 @@ class InputBuilder extends AbstractBuilder
         return TextType::class;
     }
 
+    /**
+     * @param array<string> $options
+     * @return array<mixed>
+     */
     private function getDefaultOptions(array $options = []): array
     {
-        return array_merge([
+        return (array)array_merge([
             'required' => false,
         ], $options);
     }
 
+    /**
+     * @param array<mixed> $options
+     * @return array<string>
+     */
     private function parseOptions(array $options): array
     {
         $_options = [];

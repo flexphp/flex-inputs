@@ -15,6 +15,13 @@ class Input implements InputInterface
     {
     }
 
+    /**
+     * @param array<string> $inputs
+     * @param array<string>|null $data
+     * @param array<string> $options
+     * @param string|null $template
+     * @return string
+     */
     public static function form(array $inputs, $data = null, array $options = [], string $template = null): string
     {
         return (new FormBuilder($inputs, $data, $options, $template))->render();
@@ -23,7 +30,7 @@ class Input implements InputInterface
     public static function create(string $type, string $name, array $options = []): string
     {
         return (new class($type, $name, $options) extends InputBuilder {
-            public function __construct($type, $name, $options)
+            public function __construct(string $type, string $name, array $options)
             {
                 $this->type = $type;
 
@@ -37,6 +44,11 @@ class Input implements InputInterface
         })->render();
     }
 
+    /**
+     * @param string $name
+     * @param array<int> $arguments
+     * @return string
+     */
     public static function __callStatic($name, $arguments)
     {
         return self::create($name, ...$arguments);

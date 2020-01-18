@@ -6,7 +6,14 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 abstract class AbstractBuilder implements BuilderInterface
 {
+    /**
+     * @var string
+     */
     protected $name;
+
+    /**
+     * @var array<string>
+     */
     protected $options;
 
     public function getName(): string
@@ -14,13 +21,22 @@ abstract class AbstractBuilder implements BuilderInterface
         return preg_replace('/(\s)+/', '_', trim($this->name)) ?? $this->name;
     }
 
+    /**
+     * @return array<string>
+     */
     public function getOptions(): array
     {
         return $this->options;
     }
 
+    /**
+     * @return FormBuilderInterface<string>
+     */
     abstract protected function factory(): FormBuilderInterface;
 
+    /**
+     * @return \Twig\Environment
+     */
     protected function twig()
     {
         $appVariableReflection = new \ReflectionClass('\Symfony\Bridge\Twig\AppVariable');

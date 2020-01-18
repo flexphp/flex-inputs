@@ -10,10 +10,27 @@ use Symfony\Component\Form\Forms;
 
 class FormBuilder extends AbstractBuilder
 {
+    /**
+     * @var array<string>|null
+     */
     private $data;
+
+    /**
+     * @var array<string>
+     */
     private $inputs;
+
+    /**
+     * @var string|null
+     */
     private $template;
 
+    /**
+     * @param array<string> $inputs
+     * @param array<string> $data
+     * @param array<string> $options
+     * @param string|null $template
+     */
     public function __construct(array $inputs, array $data = null, array $options = [], string $template = null)
     {
         $this->inputs = $this->parseInputs($inputs);
@@ -22,16 +39,25 @@ class FormBuilder extends AbstractBuilder
         $this->template = $template;
     }
 
+    /**
+     * @return array<string>
+     */
     private function getInputs(): array
     {
         return $this->inputs;
     }
 
+    /**
+     * @return array<string>|null
+     */
     private function getData(): ?array
     {
         return $this->data;
     }
 
+    /**
+     * @return FormInterface<string>
+     */
     public function build(): FormInterface
     {
         return $this
@@ -47,11 +73,18 @@ class FormBuilder extends AbstractBuilder
         ]);
     }
 
+    /**
+     * @return FormBuilderInterface<string>
+     */
     protected function factory(): FormBuilderInterface
     {
         return Forms::createFormFactory()->createBuilder(FormType::class, $this->getData(), $this->getOptions());
     }
 
+    /**
+     * @param array<mixed> $inputs
+     * @return array<mixed>
+     */
     private function parseInputs($inputs): array
     {
         foreach ($inputs as $name => $options) {
@@ -81,6 +114,6 @@ T;
             }
         }
 
-        return $_template;
+        return (string)$_template;
     }
 }
