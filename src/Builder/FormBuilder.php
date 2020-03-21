@@ -33,7 +33,7 @@ class FormBuilder extends AbstractBuilder
     private $template;
 
     /**
-     * @param array<string> $inputs
+     * @param array<string, mixed> $inputs
      * @param array<string> $data
      * @param array<string> $options
      */

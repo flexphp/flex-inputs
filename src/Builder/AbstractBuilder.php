@@ -25,7 +25,7 @@ abstract class AbstractBuilder implements BuilderInterface
 
     public function getName(): string
     {
-        return \preg_replace('/(\s)+/', '_', \trim($this->name)) ?? $this->name;
+        return \preg_replace('/(\s)+/', '_', \trim($this->name ?? '')) ?? $this->name;
     }
 
     /**
@@ -46,11 +46,11 @@ abstract class AbstractBuilder implements BuilderInterface
      */
     protected function twig()
     {
-        $appVariableReflection = new \ReflectionClass('\Symfony\Bridge\Twig\AppVariable');
-        $vendorTwigBridgeDirectory = \dirname((string)$appVariableReflection->getFileName());
+        $appVariable = new \ReflectionClass('\Symfony\Bridge\Twig\AppVariable');
+        $twigBridgeDirectory = \dirname((string)$appVariable->getFileName());
 
         $loader = new \Twig\Loader\FilesystemLoader([
-            $vendorTwigBridgeDirectory . '/Resources/views/Form',
+            $twigBridgeDirectory . '/Resources/views/Form',
         ]);
 
         $twig = new \Twig\Environment($loader);

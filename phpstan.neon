@@ -1,2 +1,5 @@
 parameters:
     inferPrivatePropertyTypeFromConstructor: true
+    checkMissingIterableValueType: false
+    ignoreErrors:
+        - '#Call to an undefined static method FlexPHP\\Inputs\\Input::unknow\(\).#'

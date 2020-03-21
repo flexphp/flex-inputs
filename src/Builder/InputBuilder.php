@@ -24,7 +24,7 @@ class InputBuilder extends AbstractBuilder
     protected $type;
 
     /**
-     * @param array<string> $options
+     * @param array<string, mixed> $options
      */
     public function __construct(string $name, array $options)
     {
@@ -128,6 +128,10 @@ class InputBuilder extends AbstractBuilder
                     }
 
                     foreach ($attributes as $attribute => $_value) {
+                        if (\is_int($attribute)) {
+                            $attribute = $value;
+                        }
+
                         $attribute = \strtolower($attribute);
 
                         if ($attribute == 'required' || $_value == 'required') {
