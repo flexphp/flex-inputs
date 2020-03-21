@@ -1,5 +1,12 @@
-<?php
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace FlexPHP\Inputs\Builder;
 
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,7 +25,7 @@ abstract class AbstractBuilder implements BuilderInterface
 
     public function getName(): string
     {
-        return preg_replace('/(\s)+/', '_', trim($this->name)) ?? $this->name;
+        return \preg_replace('/(\s)+/', '_', \trim($this->name)) ?? $this->name;
     }
 
     /**
@@ -40,7 +47,7 @@ abstract class AbstractBuilder implements BuilderInterface
     protected function twig()
     {
         $appVariableReflection = new \ReflectionClass('\Symfony\Bridge\Twig\AppVariable');
-        $vendorTwigBridgeDirectory = dirname((string)$appVariableReflection->getFileName());
+        $vendorTwigBridgeDirectory = \dirname((string)$appVariableReflection->getFileName());
 
         $loader = new \Twig\Loader\FilesystemLoader([
             $vendorTwigBridgeDirectory . '/Resources/views/Form',

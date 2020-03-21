@@ -1,13 +1,20 @@
-<?php
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace FlexPHP\Inputs\Builder;
 
+use InvalidArgumentException;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Forms;
-use Symfony\Component\Form\FormInterface;
-use \InvalidArgumentException;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\Forms;
 
 class InputBuilder extends AbstractBuilder
 {
@@ -17,7 +24,6 @@ class InputBuilder extends AbstractBuilder
     protected $type;
 
     /**
-     * @param string $name
      * @param array<string> $options
      */
     public function __construct(string $name, array $options)
@@ -34,11 +40,11 @@ class InputBuilder extends AbstractBuilder
     public function build(): FormInterface
     {
         $options = $this->getOptions();
-        $classType = trim($this->getType());
+        $classType = \trim($this->getType());
 
         if (\strpos($classType, 'Symfony') === false) {
             // Not symfony type
-            $type = preg_replace('/type$/i', '', $classType) ?? $classType;
+            $type = \preg_replace('/type$/i', '', $classType) ?? $classType;
             $classType = \sprintf('\Symfony\Component\Form\Extension\Core\Type\%1$sType', \ucwords($type));
         } elseif (!empty($options['type']) && \stripos($classType, $options['type']) === false) {
             // Symfony type, but its diff in options type contraint
@@ -80,25 +86,27 @@ class InputBuilder extends AbstractBuilder
 
     /**
      * @param array<string> $options
+     *
      * @return array<mixed>
      */
     private function getDefaultOptions(array $options = []): array
     {
-        return (array)array_merge([
+        return (array)\array_merge([
             'required' => false,
         ], $options);
     }
 
     /**
      * @param array<mixed> $options
+     *
      * @return array<string>
      */
     private function parseOptions(array $options): array
     {
         $_options = [];
 
-        $options = array_change_key_case(array_filter($options, function ($var) {
-            return !is_null($var);
+        $options = \array_change_key_case(\array_filter($options, function ($var) {
+            return !\is_null($var);
         }));
 
         if (!empty($options['attr']['type'])) {
@@ -110,11 +118,12 @@ class InputBuilder extends AbstractBuilder
             switch ($option) {
                 case 'default':
                     $_options['data'] = $value;
+
                     break;
                 case 'constraints':
                     $attributes = \json_decode($value, true);
 
-                    if ((\json_last_error() !== JSON_ERROR_NONE)) {
+                    if ((\json_last_error() !== \JSON_ERROR_NONE)) {
                         $attributes = [$value];
                     }
 
@@ -123,18 +132,19 @@ class InputBuilder extends AbstractBuilder
 
                         if ($attribute == 'required' || $_value == 'required') {
                             $_options['required'] = true;
-                        } elseif (in_array($attribute, ['length', 'mincheck', 'maxcheck', 'check', 'equalto'])) {
+                        } elseif (\in_array($attribute, ['length', 'mincheck', 'maxcheck', 'check', 'equalto'])) {
                             $_options['attr']['data-parsley-' . $attribute] = $_value;
                         } elseif ($attribute == 'range') {
                             $_options['type'] = $attribute;
-                            list($min, $max) = explode(',', $_value);
-                            $_options['attr'] = compact('min', 'max');
+                            [$min, $max] = \explode(',', $_value);
+                            $_options['attr'] = \compact('min', 'max');
                         } elseif ($attribute == 'type') {
                             $_options['type'] = $_value;
                         } else {
                             $_options['attr'][$attribute] = $_value;
                         }
                     }
+
                     break;
                 case 'empty_data':
                     $_options[$option] = $value;
@@ -147,11 +157,12 @@ class InputBuilder extends AbstractBuilder
 
                     break;
                 default:
-                    if (is_array($value) && !empty($_options[$option])) {
-                        $_options[$option] = array_merge_recursive($_options[$option], $value);
+                    if (\is_array($value) && !empty($_options[$option])) {
+                        $_options[$option] = \array_merge_recursive($_options[$option], $value);
                     } else {
                         $_options[$option] = $value;
                     }
+
                     break;
             }
 
@@ -159,13 +170,14 @@ class InputBuilder extends AbstractBuilder
         }
 
         if (!empty($_options['type'])) {
-            $_type = strtolower($_options['type']);
+            $_type = \strtolower($_options['type']);
 
             switch ($_type) {
                 case 'digits':
                 case 'alphanum':
                     $_options['attr']['data-parsley-type'] = $_type;
                     $_options['type'] = 'text';
+
                     break;
             }
         }

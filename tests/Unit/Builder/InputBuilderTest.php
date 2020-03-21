@@ -1,5 +1,12 @@
-<?php
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace FlexPHP\Inputs\Tests\Unit\Builder;
 
 use FlexPHP\Inputs\Builder\InputBuilder;
@@ -29,6 +36,8 @@ T
 
     /**
      * @dataProvider getDefaultWithSpacesOptions
+     *
+     * @param mixed $name
      */
     public function testItDefaultSpace($name): void
     {
@@ -106,8 +115,7 @@ T
     /**
      * @dataProvider getRequiredOptions
      *
-     * @param string|array $required
-     * @return void
+     * @param array|string $required
      */
     public function testItSetRequiredConstraint($required): void
     {
@@ -124,7 +132,7 @@ T
     public function testItSetTypeConstraint(): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => json_encode([
+            'Constraints' => \json_encode([
                 'type' => 'email',
             ]),
         ]))->render();
@@ -152,7 +160,7 @@ T
     public function testItSetDigitsConstraint(): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => json_encode([
+            'Constraints' => \json_encode([
                 'type' => 'digits',
             ]),
         ]))->render();
@@ -166,7 +174,7 @@ T
     public function testItSetAlphanumConstraint(): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => json_encode([
+            'Constraints' => \json_encode([
                 'Type' => 'Alphanum',
             ]),
         ]))->render();
@@ -180,7 +188,7 @@ T
     public function testItSetMinLengthConstraint(): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => json_encode([
+            'Constraints' => \json_encode([
                 'minlength' => 5,
             ]),
         ]))->render();
@@ -194,7 +202,7 @@ T
     public function testItSetMaxLengthConstraint(): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => json_encode([
+            'Constraints' => \json_encode([
                 'maxlength' => 666,
             ]),
         ]))->render();
@@ -208,7 +216,7 @@ T
     public function testItSetLengthConstraint(): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => json_encode([
+            'Constraints' => \json_encode([
                 'length' => '[6,10]',
             ]),
         ]))->render();
@@ -222,7 +230,7 @@ T
     public function testItSetMinConstraint(): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => json_encode([
+            'Constraints' => \json_encode([
                 'min' => 3,
             ]),
         ]))->render();
@@ -236,7 +244,7 @@ T
     public function testItSetMaxConstraint(): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => json_encode([
+            'Constraints' => \json_encode([
                 'max' => 99,
             ]),
         ]))->render();
@@ -250,7 +258,7 @@ T
     public function testItSetRangeConstraint(): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => json_encode([
+            'Constraints' => \json_encode([
                 'range' => '6,10',
             ]),
         ]))->render();
@@ -264,7 +272,7 @@ T
     public function testItSetPatternConstraint(): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => json_encode([
+            'Constraints' => \json_encode([
                 'pattern' => "\+d",
             ]),
         ]))->render();
@@ -278,7 +286,7 @@ T
     public function testItSetMinCheckConstraint(): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => json_encode([
+            'Constraints' => \json_encode([
                 'mincheck' => '3',
             ]),
         ]))->render();
@@ -292,7 +300,7 @@ T
     public function testItSetMaxCheckConstraint(): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => json_encode([
+            'Constraints' => \json_encode([
                 'maxcheck' => 5,
             ]),
         ]))->render();
@@ -306,7 +314,7 @@ T
     public function testItSetCheckConstraint(): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => json_encode([
+            'Constraints' => \json_encode([
                 'check' => '[1,3]',
             ]),
         ]))->render();
@@ -320,7 +328,7 @@ T
     public function testItSetEqualToConstraint(): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => json_encode([
+            'Constraints' => \json_encode([
                 'equalto' => '#another',
             ]),
         ]))->render();
@@ -334,7 +342,7 @@ T
     public function testItSetDataParsleyConstraint(): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => json_encode([
+            'Constraints' => \json_encode([
                 'data-parsley-validator-foo' => '#bar',
             ]),
         ]))->render();

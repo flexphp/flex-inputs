@@ -1,5 +1,12 @@
-<?php
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace FlexPHP\Inputs\Builder;
 
 use FlexPHP\Inputs\Input;
@@ -11,7 +18,7 @@ use Symfony\Component\Form\Forms;
 class FormBuilder extends AbstractBuilder
 {
     /**
-     * @var array<string>|null
+     * @var null|array<string>
      */
     private $data;
 
@@ -21,7 +28,7 @@ class FormBuilder extends AbstractBuilder
     private $inputs;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     private $template;
 
@@ -29,7 +36,6 @@ class FormBuilder extends AbstractBuilder
      * @param array<string> $inputs
      * @param array<string> $data
      * @param array<string> $options
-     * @param string|null $template
      */
     public function __construct(array $inputs, array $data = null, array $options = [], string $template = null)
     {
@@ -37,22 +43,6 @@ class FormBuilder extends AbstractBuilder
         $this->data = $data;
         $this->options = $options;
         $this->template = $template;
-    }
-
-    /**
-     * @return array<string>
-     */
-    private function getInputs(): array
-    {
-        return $this->inputs;
-    }
-
-    /**
-     * @return array<string>|null
-     */
-    private function getData(): ?array
-    {
-        return $this->data;
     }
 
     /**
@@ -82,7 +72,24 @@ class FormBuilder extends AbstractBuilder
     }
 
     /**
+     * @return array<string>
+     */
+    private function getInputs(): array
+    {
+        return $this->inputs;
+    }
+
+    /**
+     * @return null|array<string>
+     */
+    private function getData(): ?array
+    {
+        return $this->data;
+    }
+
+    /**
      * @param array<mixed> $inputs
+     *
      * @return array<mixed>
      */
     private function parseInputs($inputs): array

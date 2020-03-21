@@ -1,5 +1,12 @@
-<?php
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace FlexPHP\Inputs;
 
 use FlexPHP\Inputs\Builder\FormBuilder;
@@ -8,19 +15,12 @@ use FlexPHP\Inputs\Builder\InputBuilder;
 /**
  * @method static string text(string $name, array $options = [])
  */
-class Input implements InputInterface
+final class Input implements InputInterface
 {
-    /** @codeCoverageIgnore */
-    private function __construct()
-    {
-    }
-
     /**
      * @param array<string> $inputs
-     * @param array<string>|null $data
+     * @param null|array<string> $data
      * @param array<string> $options
-     * @param string|null $template
-     * @return string
      */
     public static function form(array $inputs, $data = null, array $options = [], string $template = null): string
     {
@@ -44,9 +44,15 @@ class Input implements InputInterface
         })->render();
     }
 
+    /** @codeCoverageIgnore */
+    private function __construct()
+    {
+    }
+
     /**
      * @param string $name
      * @param array<int> $arguments
+     *
      * @return string
      */
     public static function __callStatic($name, $arguments)
