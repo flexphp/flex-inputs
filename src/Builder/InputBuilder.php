@@ -105,8 +105,6 @@ class InputBuilder extends AbstractBuilder
     {
         $_options = [];
 
-        $options = \array_change_key_case($options);
-
         if (!empty($options['attr']['type'])) {
             $options['type'] = $options['attr']['type'];
             unset($options['attr']['type']);
@@ -119,28 +117,21 @@ class InputBuilder extends AbstractBuilder
 
                     break;
                 case 'constraints':
-                    $attributes = \json_decode($value, true);
-
-                    if ((\json_last_error() !== \JSON_ERROR_NONE)) {
-                        $attributes = [$value];
-                    }
-
-                    foreach ($attributes as $attribute => $_value) {
+                    foreach ($value as $attribute => $_value) {
                         if (\is_int($attribute)) {
-                            $attribute = $value;
+                            $attribute = $_value;
+                            $_value = true;
                         }
 
-                        $attribute = \strtolower($attribute);
-
-                        if ($attribute == 'required' || $_value == 'required') {
-                            $_options['required'] = true;
+                        if ($attribute === 'required') {
+                            $_options['required'] = $_value && !\preg_match('/^false$/i', (string)$_value);
                         } elseif (\in_array($attribute, ['length', 'mincheck', 'maxcheck', 'check', 'equalto'])) {
                             $_options['attr']['data-parsley-' . $attribute] = $_value;
-                        } elseif ($attribute == 'range') {
+                        } elseif ($attribute === 'range') {
                             $_options['type'] = $attribute;
                             [$min, $max] = \explode(',', $_value);
                             $_options['attr'] = \compact('min', 'max');
-                        } elseif ($attribute == 'type') {
+                        } elseif ($attribute === 'type') {
                             $_options['type'] = $_value;
                         } else {
                             $_options['attr'][$attribute] = $_value;

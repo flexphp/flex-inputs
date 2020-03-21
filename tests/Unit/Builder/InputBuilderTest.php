@@ -52,7 +52,7 @@ T
     public function testItSetLabel(): void
     {
         $render = (new InputBuilder('foo', [
-            'Label' => 'My Label',
+            'label' => 'My Label',
         ]))->render();
 
         $this->assertEquals(<<<T
@@ -64,7 +64,7 @@ T
     public function testItSetLabelAttr(): void
     {
         $render = (new InputBuilder('foo', [
-            'Label' => 'My Label',
+            'label' => 'My Label',
             'label_attr' => [
                 'class' => 'label-class',
             ],
@@ -79,7 +79,7 @@ T
     public function testItSetDefault(): void
     {
         $render = (new InputBuilder('foo', [
-            'Default' => 'fuz',
+            'default' => 'fuz',
         ]))->render();
 
         $this->assertEquals(<<<T
@@ -91,7 +91,7 @@ T
     public function testItSetType(): void
     {
         $render = (new InputBuilder('foo', [
-            'Type' => 'email',
+            'type' => 'email',
         ]))->render();
 
         $this->assertEquals(<<<T
@@ -103,7 +103,7 @@ T
     public function testItSetRequired(): void
     {
         $render = (new InputBuilder('foo', [
-            'Required' => true,
+            'required' => true,
         ]))->render();
 
         $this->assertEquals(<<<T
@@ -120,7 +120,7 @@ T
     public function testItSetRequiredConstraint($required): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => $required,
+            'constraints' => $required,
         ]))->render();
 
         $this->assertEquals(<<<T
@@ -129,12 +129,29 @@ T
 , $render);
     }
 
+    /**
+     * @dataProvider getNotRequiredOptions
+     *
+     * @param array|string $required
+     */
+    public function testItSetNotRequiredConstraint($required): void
+    {
+        $render = (new InputBuilder('foo', [
+            'constraints' => $required,
+        ]))->render();
+
+        $this->assertEquals(<<<T
+<div class="form-group"><label for="form_foo">Foo</label><input type="text" id="form_foo" name="form[foo]" class="form-control" /></div>
+T
+, $render);
+    }
+
     public function testItSetTypeConstraint(): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => \json_encode([
+            'constraints' => [
                 'type' => 'email',
-            ]),
+            ],
         ]))->render();
 
         $this->assertEquals(<<<T
@@ -160,9 +177,9 @@ T
     public function testItSetDigitsConstraint(): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => \json_encode([
+            'constraints' => [
                 'type' => 'digits',
-            ]),
+            ],
         ]))->render();
 
         $this->assertEquals(<<<T
@@ -174,9 +191,9 @@ T
     public function testItSetAlphanumConstraint(): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => \json_encode([
-                'Type' => 'Alphanum',
-            ]),
+            'constraints' => [
+                'type' => 'Alphanum',
+            ],
         ]))->render();
 
         $this->assertEquals(<<<T
@@ -188,9 +205,9 @@ T
     public function testItSetMinLengthConstraint(): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => \json_encode([
+            'constraints' => [
                 'minlength' => 5,
-            ]),
+            ],
         ]))->render();
 
         $this->assertEquals(<<<T
@@ -202,9 +219,9 @@ T
     public function testItSetMaxLengthConstraint(): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => \json_encode([
+            'constraints' => [
                 'maxlength' => 666,
-            ]),
+            ],
         ]))->render();
 
         $this->assertEquals(<<<T
@@ -216,9 +233,9 @@ T
     public function testItSetLengthConstraint(): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => \json_encode([
+            'constraints' => [
                 'length' => '[6,10]',
-            ]),
+            ],
         ]))->render();
 
         $this->assertEquals(<<<T
@@ -230,9 +247,9 @@ T
     public function testItSetMinConstraint(): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => \json_encode([
+            'constraints' => [
                 'min' => 3,
-            ]),
+            ],
         ]))->render();
 
         $this->assertEquals(<<<T
@@ -244,9 +261,9 @@ T
     public function testItSetMaxConstraint(): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => \json_encode([
+            'constraints' => [
                 'max' => 99,
-            ]),
+            ],
         ]))->render();
 
         $this->assertEquals(<<<T
@@ -258,9 +275,9 @@ T
     public function testItSetRangeConstraint(): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => \json_encode([
+            'constraints' => [
                 'range' => '6,10',
-            ]),
+            ],
         ]))->render();
 
         $this->assertEquals(<<<T
@@ -272,9 +289,9 @@ T
     public function testItSetPatternConstraint(): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => \json_encode([
+            'constraints' => [
                 'pattern' => "\+d",
-            ]),
+            ],
         ]))->render();
 
         $this->assertEquals(<<<T
@@ -286,9 +303,9 @@ T
     public function testItSetMinCheckConstraint(): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => \json_encode([
+            'constraints' => [
                 'mincheck' => '3',
-            ]),
+            ],
         ]))->render();
 
         $this->assertEquals(<<<T
@@ -300,9 +317,9 @@ T
     public function testItSetMaxCheckConstraint(): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => \json_encode([
+            'constraints' => [
                 'maxcheck' => 5,
-            ]),
+            ],
         ]))->render();
 
         $this->assertEquals(<<<T
@@ -314,9 +331,9 @@ T
     public function testItSetCheckConstraint(): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => \json_encode([
+            'constraints' => [
                 'check' => '[1,3]',
-            ]),
+            ],
         ]))->render();
 
         $this->assertEquals(<<<T
@@ -328,9 +345,9 @@ T
     public function testItSetEqualToConstraint(): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => \json_encode([
+            'constraints' => [
                 'equalto' => '#another',
-            ]),
+            ],
         ]))->render();
 
         $this->assertEquals(<<<T
@@ -342,9 +359,9 @@ T
     public function testItSetDataParsleyConstraint(): void
     {
         $render = (new InputBuilder('foo', [
-            'Constraints' => \json_encode([
+            'constraints' => [
                 'data-parsley-validator-foo' => '#bar',
-            ]),
+            ],
         ]))->render();
 
         $this->assertEquals(<<<T
@@ -356,7 +373,7 @@ T
     public function testItSetHelp(): void
     {
         $render = (new InputBuilder('foo', [
-            'Help' => 'A help block',
+            'help' => 'A help block',
         ]))->render();
 
         $this->assertEquals(<<<T
@@ -368,7 +385,7 @@ T
     public function testItSetHelpAttr(): void
     {
         $render = (new InputBuilder('foo', [
-            'Help' => 'A help block',
+            'help' => 'A help block',
             'help_attr' => [
                 'class' => 'help-class',
             ],
@@ -383,7 +400,7 @@ T
     public function testItSetHelpHtml(): void
     {
         $render = (new InputBuilder('foo', [
-            'Help' => '<a href="link">A help block</a>',
+            'help' => '<a href="link">A help block</a>',
             'help_html' => true,
         ]))->render();
 
@@ -492,11 +509,18 @@ T
     public function getRequiredOptions(): array
     {
         return [
-            [\json_encode(['required'])],
-            [\json_encode(['required' => true])],
-            [\json_encode(['required' => 'true'])],
-            [\json_encode(['required' => 'required'])],
-            ['required'],
+            [['required']],
+            [['required' => true]],
+            [['required' => 'true']],
+            [['required' => 'required']],
+        ];
+    }
+
+    public function getNotRequiredOptions(): array
+    {
+        return [
+            [['required' => false]],
+            [['required' => 'false']],
         ];
     }
 }
