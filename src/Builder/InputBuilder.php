@@ -105,9 +105,7 @@ class InputBuilder extends AbstractBuilder
     {
         $_options = [];
 
-        $options = \array_change_key_case(\array_filter($options, function ($var) {
-            return !\is_null($var);
-        }));
+        $options = \array_change_key_case($options);
 
         if (!empty($options['attr']['type'])) {
             $options['type'] = $options['attr']['type'];
