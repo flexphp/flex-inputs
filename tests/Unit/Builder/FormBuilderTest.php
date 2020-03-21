@@ -77,7 +77,7 @@ T
 
     public function testItWithStringTemplate(): void
     {
-        $render = (new FormBuilder([], null, [], '{{ form(form) }}'))->render();
+        $render = (new FormBuilder([], [], [], '{{ form(form) }}'))->render();
 
         $this->assertEquals(<<<T
 <form name="form" method="post"><div id="form"></div></form>
@@ -89,7 +89,7 @@ T
     {
         $file = \sprintf('%1$s/../../Resources/Template.html.twig', __DIR__);
 
-        $render = (new FormBuilder([], null, [], $file))->render();
+        $render = (new FormBuilder([], [], [], $file))->render();
 
         $this->assertEquals(<<<T
 File: <form name="form" method="post"><div id="form"></div></form>

@@ -18,9 +18,9 @@ use Symfony\Component\Form\Forms;
 class FormBuilder extends AbstractBuilder
 {
     /**
-     * @var null|array<string>
+     * @var array<string>
      */
-    private $data;
+    private $data = [];
 
     /**
      * @var array<string>
@@ -28,7 +28,7 @@ class FormBuilder extends AbstractBuilder
     private $inputs;
 
     /**
-     * @var null|string
+     * @var string
      */
     private $template;
 
@@ -37,7 +37,7 @@ class FormBuilder extends AbstractBuilder
      * @param array<string> $data
      * @param array<string> $options
      */
-    public function __construct(array $inputs, array $data = null, array $options = [], string $template = null)
+    public function __construct(array $inputs, array $data = [], array $options = [], string $template = '')
     {
         $this->inputs = $this->parseInputs($inputs);
         $this->data = $data;
@@ -80,9 +80,9 @@ class FormBuilder extends AbstractBuilder
     }
 
     /**
-     * @return null|array<string>
+     * @return array<string>
      */
-    private function getData(): ?array
+    private function getData(): array
     {
         return $this->data;
     }
@@ -113,14 +113,12 @@ class FormBuilder extends AbstractBuilder
 {{ form_end(form) }}
 T;
 
-        if ($this->template) {
-            if (\is_file($this->template)) {
-                $_template = \file_get_contents($this->template);
-            } else {
-                $_template = $this->template;
-            }
+        if (\is_file($this->template)) {
+            $_template = (string)\file_get_contents($this->template);
+        } elseif (!empty($this->template)) {
+            $_template = $this->template;
         }
 
-        return (string)$_template;
+        return $_template;
     }
 }

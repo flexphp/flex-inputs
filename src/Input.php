@@ -19,10 +19,10 @@ final class Input implements InputInterface
 {
     /**
      * @param array<string> $inputs
-     * @param null|array<string> $data
+     * @param array<string> $data
      * @param array<string> $options
      */
-    public static function form(array $inputs, $data = null, array $options = [], string $template = null): string
+    public static function form(array $inputs, array $data = [], array $options = [], string $template = ''): string
     {
         return (new FormBuilder($inputs, $data, $options, $template))->render();
     }
