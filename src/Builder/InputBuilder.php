@@ -117,44 +117,15 @@ class InputBuilder extends AbstractBuilder
 
                     break;
                 case 'constraints':
-                    foreach ($value as $attribute => $_value) {
-                        if (\is_int($attribute)) {
-                            $attribute = $_value;
-                            $_value = true;
-                        }
-
-                        if ($attribute === 'required') {
-                            $_options['required'] = $_value && !\preg_match('/^false$/i', (string)$_value);
-                        } elseif (\in_array($attribute, ['length', 'mincheck', 'maxcheck', 'check', 'equalto'])) {
-                            $_options['attr']['data-parsley-' . $attribute] = $_value;
-                        } elseif ($attribute === 'range') {
-                            $_options['type'] = $attribute;
-                            [$min, $max] = \explode(',', $_value);
-                            $_options['attr'] = \compact('min', 'max');
-                        } elseif ($attribute === 'type') {
-                            $_options['type'] = $_value;
-                        } else {
-                            $_options['attr'][$attribute] = $_value;
-                        }
-                    }
+                    $_options = $this->parseOptionConstraints($_options, $value);
 
                     break;
                 case 'empty_data':
-                    $_options[$option] = $value;
-
-                    if (empty($_options['attr'])) {
-                        $_options['attr'] = [];
-                    }
-
-                    $_options['attr']['placeholder'] = $value;
+                    $_options = $this->parseOptionEmptyData($_options, $option, $value);
 
                     break;
                 default:
-                    if (\is_array($value) && !empty($_options[$option])) {
-                        $_options[$option] = \array_merge_recursive($_options[$option], $value);
-                    } else {
-                        $_options[$option] = $value;
-                    }
+                    $_options = $this->parseOption($_options, $option, $value);
 
                     break;
             }
@@ -162,17 +133,71 @@ class InputBuilder extends AbstractBuilder
             unset($options[$option]);
         }
 
+        return $this->parseOptionTypeSpecial($_options);
+    }
+
+    private function parseOptionEmptyData(array $_options, string $option, string $value): array
+    {
+        $_options[$option] = $value;
+
+        if (empty($_options['attr'])) {
+            $_options['attr'] = [];
+        }
+
+        $_options['attr']['placeholder'] = $value;
+
+        return $_options;
+    }
+
+    private function parseOptionConstraints(array $_options, array $value): array
+    {
+        foreach ($value as $attribute => $_value) {
+            if (\is_int($attribute)) {
+                $attribute = $_value;
+                $_value = true;
+            }
+
+            if ($attribute === 'required') {
+                $_options['required'] = $_value && !\preg_match('/^false$/i', (string)$_value);
+            } elseif (\in_array($attribute, ['length', 'mincheck', 'maxcheck', 'check', 'equalto'])) {
+                $_options['attr']['data-parsley-' . $attribute] = $_value;
+            } elseif ($attribute === 'range') {
+                $_options['type'] = $attribute;
+                [$min, $max] = \explode(',', $_value);
+                $_options['attr'] = \compact('min', 'max');
+            } elseif ($attribute === 'type') {
+                $_options['type'] = $_value;
+            } else {
+                $_options['attr'][$attribute] = $_value;
+            }
+        }
+
+        return $_options;
+    }
+
+    private function parseOptionTypeSpecial(array $_options): array
+    {
         if (!empty($_options['type'])) {
             $_type = \strtolower($_options['type']);
 
-            switch ($_type) {
-                case 'digits':
-                case 'alphanum':
-                    $_options['attr']['data-parsley-type'] = $_type;
-                    $_options['type'] = 'text';
-
-                    break;
+            if (\in_array($_type, ['digits', 'alphanum'])) {
+                $_options['attr']['data-parsley-type'] = $_type;
+                $_options['type'] = 'text';
             }
+        }
+
+        return $_options;
+    }
+
+    /**
+     * @param mixed $value
+     */
+    private function parseOption(array $_options, string $option, $value): array
+    {
+        if (\is_array($value) && !empty($_options[$option])) {
+            $_options[$option] = \array_merge_recursive($_options[$option], $value);
+        } else {
+            $_options[$option] = $value;
         }
 
         return $_options;
