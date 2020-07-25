@@ -50,13 +50,13 @@ final class Input implements InputInterface
     }
 
     /**
-     * @param string $name
-     * @param array<int> $arguments
+     * @param string $type
+     * @param array<int, string> $arguments
      *
      * @return string
      */
-    public static function __callStatic($name, $arguments)
+    public static function __callStatic($type, $arguments)
     {
-        return self::create($name, ...$arguments);
+        return self::create($type, ...$arguments);
     }
 }
