@@ -281,7 +281,7 @@ T
         ]))->render();
 
         $this->assertEquals(<<<T
-<div class="form-group"><label for="form_foo">Foo</label>        <input type="range" id="form_foo" name="form[foo]" min="6" max="10" class="form-control" /></div>
+<div class="form-group"><label for="form_foo">Foo</label>        <input type="range" id="form_foo" name="form[foo]" min="6" max="10" class="form-control-range" /></div>
 T
 , $render);
     }
@@ -480,8 +480,6 @@ T
 
     public function testItSetRowAttr(): void
     {
-        $this->markTestSkipped('Not works...');
-
         $render = (new InputBuilder('foo', [
             'row_attr' => [
                 'class' => 'row-class',
