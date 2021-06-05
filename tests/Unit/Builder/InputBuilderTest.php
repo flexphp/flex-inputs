@@ -480,8 +480,6 @@ T
 
     public function testItSetRowAttr(): void
     {
-        $this->markTestSkipped('Not works...');
-
         $render = (new InputBuilder('foo', [
             'row_attr' => [
                 'class' => 'row-class',
