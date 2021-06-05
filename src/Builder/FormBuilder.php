@@ -20,17 +20,14 @@ class FormBuilder extends AbstractBuilder
     /**
      * @var array<string>
      */
-    private $data = [];
+    private array $data = [];
 
     /**
      * @var array<string>
      */
-    private $inputs;
+    private array $inputs = [];
 
-    /**
-     * @var string
-     */
-    private $template;
+    private string $template;
 
     /**
      * @param array<string, mixed> $inputs
